@@ -118,12 +118,8 @@ h2 { font-size: 28px; font-weight: 650; margin-bottom: 12px; }
 .provider-button svg { width: 20px; height: 20px; }
 .google-button { background: #fff; color: #1f1f1f; border-color: #747775; }
 .google-button:hover:not(:disabled) { background: #f2f4f4; }
-.apple-button { background: #000; color: #fff; border-color: #000; }
-.apple-button:hover:not(:disabled) { background: #252525; }
 :root[data-theme="dark"] .google-button { background: #131314; color: #e3e3e3; border-color: #8e918f; }
 :root[data-theme="dark"] .google-button:hover:not(:disabled) { background: #282a2c; }
-:root[data-theme="dark"] .apple-button { background: #fff; color: #000; border-color: #fff; }
-:root[data-theme="dark"] .apple-button:hover:not(:disabled) { background: #e9e9e9; }
 .provider-hint { text-align: center; font-size: 12px; color: var(--muted); margin: 10px 0 16px; }
 .auth-divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; margin-top: 22px; }
 .auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
@@ -232,5 +228,14 @@ input[aria-invalid="true"] { border-color: var(--error); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Small, consistent responses without delaying input or navigation. */
+@media (prefers-reduced-motion: no-preference) {
+    button, .secondary-button, .auth-tabs a {
+        transition: border-color .16s ease, box-shadow .16s ease;
+    }
+    .auth-layout, .account-layout { animation: page-arrive .22s ease-out; }
+    @keyframes page-arrive { from { opacity: .5; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 }

@@ -134,7 +134,12 @@ test('real Firebase SDK loads and signed-out visitors see ready login controls',
     await page.goto('/');
     await expect(page).toHaveURL(/login\.html$/, {timeout:25000});
     await expect(page.locator('[data-provider="google"]')).toBeEnabled({timeout:20000});
-    await expect(page.locator('[data-provider="apple"]')).toBeEnabled();
+    await expect(page.locator('[data-provider="apple"]')).toHaveCount(0);
+    await page.goto('/signup.html');
+    await expect(page.locator('[data-provider="google"]')).toBeEnabled({timeout:20000});
+    await expect(page.locator('[data-provider="apple"]')).toHaveCount(0);
+    await expect(page.locator('#email')).toBeVisible();
+    await expect(page.locator('#password')).toBeVisible();
     expect(errors).toEqual([]);
 });
 

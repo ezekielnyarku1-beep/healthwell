@@ -91,7 +91,7 @@ export async function setupAuthPage() {
             providerSection.setAttribute('aria-busy', 'true');
             setMessage(message, '');
             setMessage(status, '');
-            setMessage(providerMessage, `Continue in the ${button.dataset.provider === 'google' ? 'Google' : 'Apple'} sign-in window.`);
+            setMessage(providerMessage, 'Continue in the Google sign-in window.');
             try {
                 // No await before this call: keep the popup tied to the click.
                 await startProviderSignIn(button.dataset.provider);

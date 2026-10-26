@@ -11,6 +11,23 @@ export async function setupDashboard(service = authService) {
     let connecting = false;
     let connectionAttempt = 0;
     let activeUserId = null;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function focusQuestion() {
+        const title = $('question-title');
+        title.focus({ preventScroll: true });
+        const bounds = title.getBoundingClientRect();
+        if (bounds.top < 0 || bounds.bottom > window.innerHeight) {
+            title.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+        }
+    }
+
+    function animatePanel() {
+        if (reducedMotion.matches) return;
+        const panel = document.querySelector('.question-panel');
+        panel.getAnimations().forEach(animation => animation.cancel());
+        panel.animate([{ opacity: .65, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 180, easing: 'ease-out' });
+    }
 
     for (const region of regions) {
         const button = document.createElement('button');
@@ -83,12 +100,20 @@ export async function setupDashboard(service = authService) {
         $('flow-reset').hidden = state.step !== 3;
         $('flow-error').textContent = '';
         if (options) showOptions();
-        if (focus) $('question-title').focus();
+        if (focus) { focusQuestion(); animatePanel(); }
     }
 
     function selectRegion(id) {
+        // Repeated taps keep the existing question and keyboard focus stable.
+        if (flow.state.region === id && flow.state.step === 1) {
+            if (id === 'back') flow.setView('back');
+            if (['chest', 'abdomen'].includes(id)) flow.setView('front');
+            render();
+            return;
+        }
         if (!flow.selectRegion(id)) return;
         render({ options: true });
+        animatePanel();
     }
 
     function clearSymptoms() {
@@ -119,7 +144,7 @@ export async function setupDashboard(service = authService) {
         flow.setDescription(description.value);
         // No keyword interpretation: a description starts in the general category.
         selectRegion(flow.state.region || 'general');
-        $('question-title').focus();
+        focusQuestion();
     });
     $('edit-description').addEventListener('click', () => description.focus());
     $('flow-continue').addEventListener('click', () => {

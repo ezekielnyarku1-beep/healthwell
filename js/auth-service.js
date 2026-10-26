@@ -55,10 +55,6 @@ export function createAuthService(load = getFirebase) {
                 if (providerName === 'google') {
                     provider = new sdk.GoogleAuthProvider();
                     provider.setCustomParameters({ prompt: 'select_account' });
-                } else if (providerName === 'apple') {
-                    provider = new sdk.OAuthProvider('apple.com');
-                    provider.addScope('email');
-                    provider.addScope('name');
                 } else {
                     throw Object.assign(new Error('Unsupported sign-in method'), { code: 'app/unsupported-provider' });
                 }

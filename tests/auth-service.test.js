@@ -100,13 +100,13 @@ test('Google popup starts synchronously after preparation without email/password
     assert.equal(calls[0].args[1], 'session');
     await result;
 });
-test('Apple requests only name and email and respects remember me', async () => {
+test('Google respects remember me', async () => {
     const { service, calls } = mockService();
     const signIn = await service.prepareProviderSignIn({ remember: true });
-    await signIn('apple');
+    await signIn('google');
     assert.equal(calls[0].args[1], 'local');
-    assert.equal(calls[1].args[1].providerId, 'apple.com');
-    assert.deepEqual(calls[1].args[1].scopes, ['email', 'name']);
+    assert.equal(calls[1].args[1].providerId, 'google.com');
+    assert.deepEqual(calls[1].args[1].scopes, []);
     assert.deepEqual(calls.map(call => call.method), ['setPersistence', 'signInWithPopup']);
 });
 test('popup errors propagate without retrying or switching accounts automatically', async () => {
@@ -126,5 +126,6 @@ test('unsupported providers are rejected without invoking OAuth', async () => {
     const { service, calls } = mockService();
     const signIn = await service.prepareProviderSignIn();
     assert.throws(() => signIn('unknown'), { code: 'app/unsupported-provider' });
+    assert.throws(() => signIn('apple'), { code: 'app/unsupported-provider' });
     assert.equal(calls.length, 1);
 });
