@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthWell Unity — a community-focused space for health information and wellbeing.">
+    <meta name="theme-color" content="#f7faf9">
+    <title>Log in | HealthWell Unity</title>
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <script src="js/theme.js"></script>
+    <script src="js/local-preview.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+</head>
+<body data-page="login">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <a href="index.html" class="logo" aria-label="HealthWell Unity home">
+            <img src="assets/logo.svg" alt="" width="58" height="44">
+            <span>HealthWell<span class="brand-subtitle">UNITY</span></span>
+        </a>
+        <div class="header-actions">
+            <span class="header-tagline">A healthier everyday, together.</span>
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 13A8.6 8.6 0 0 1 11 3.5 8.6 8.6 0 1 0 20.5 13Z"/></svg>
+                <span>Dark mode</span>
+            </button>
+        </div>
+    </header>
+    <p id="network-status" class="network-status message" role="status" hidden></p>
+    <main id="main-content" class="auth-layout">
+        <section class="welcome-panel" aria-labelledby="welcome-title">
+            <div class="welcome-copy">
+                <p class="eyebrow"><span></span> YOUR HEALTH. OUR SHARED PURPOSE.</p>
+                <h1 id="welcome-title">A moment for you.<br>A step toward<br><em>feeling informed.</em></h1>
+                <p class="welcome-description">Come back to a community-minded space for health information and everyday wellbeing.</p>
+                <div class="welcome-tags"><span>Learn at your pace</span><span>Feel more informed</span></div>
+            </div>
+            <div class="garden-scene" aria-hidden="true">
+                <img src="wellness-garden.svg" alt="" width="600" height="430">
+                <div class="floating-note"><span>✦</span><p>Small steps. Meaningful beginnings.<small>ONE DAY AT A TIME</small></p></div>
+            </div>
+            <p class="panel-bottom"><span class="tiny-circle" aria-hidden="true"></span> Rooted in community. Built around you.</p>
+        </section>
+        <section class="form-panel" aria-labelledby="form-title">
+            <div class="form-content">
+                <nav class="auth-tabs" aria-label="Account access">
+                    <a href="login.html" aria-current="page">Log in</a>
+                    <a href="signup.html">Sign up</a>
+                    
+                </nav>
+                <div class="form-heading">
+                    <p class="section-kicker">GOOD TO SEE YOU AGAIN</p>
+                    <h2 id="form-title">Welcome back.</h2>
+                    <p>A little time for you. A step toward better wellbeing.</p>
+                </div>
+                <p id="service-status" class="message" role="status">Loading account services…</p>
+                <section id="provider-signin" class="provider-signin" aria-label="Sign in with an existing account">
+                    <div class="provider-buttons">
+                        <button class="provider-button google-button" type="button" data-provider="google" disabled>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.33 2.98-7.36Z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.61-2.41l-3.24-2.51c-.9.6-2.04.97-3.37.97-2.6 0-4.81-1.76-5.6-4.12H3.06v2.59A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.4 13.93a6 6 0 0 1 0-3.86V7.48H3.06a10 10 0 0 0 0 9.04l3.34-2.59Z"/><path fill="#EA4335" d="M12 5.95c1.47 0 2.79.51 3.82 1.51l2.87-2.87A9.6 9.6 0 0 0 12 2a10 10 0 0 0-8.94 5.48l3.34 2.59C7.19 7.71 9.4 5.95 12 5.95Z"/></svg>
+                            <span>Continue with Google</span>
+                        </button>
+                        <button class="provider-button apple-button" type="button" data-provider="apple" disabled>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c.1 1.19-.35 2.39-1.05 3.25-.74.88-1.91 1.57-3.07 1.48-.15-1.16.43-2.4 1.09-3.15.74-.87 2.02-1.5 3.03-1.58ZM20.64 17.21c-.47 1.07-.69 1.55-1.3 2.5-.85 1.32-2.05 2.96-3.53 2.97-1.31.01-1.65-.86-3.43-.85-1.77.01-2.15.87-3.46.86-1.48-.01-2.61-1.49-3.46-2.81-2.38-3.7-2.63-8.05-1.16-10.37 1.05-1.65 2.71-2.61 4.27-2.61 1.59 0 2.59.87 3.9.87 1.27 0 2.05-.87 3.89-.87 1.39 0 2.86.76 3.91 2.07-3.44 1.89-2.88 6.8.37 8.24Z"/></svg>
+                            <span>Continue with Apple</span>
+                        </button>
+                    </div>
+                    <p class="provider-hint">New here? Your first sign-in creates your account.</p>
+                    <p id="provider-message" class="message" role="status" aria-live="polite" tabindex="-1" hidden></p>
+                    <button id="provider-retry" class="text-button" type="button" hidden>Retry sign-in options</button>
+                    <div class="auth-divider"><span>or continue with email</span></div>
+                </section>
+
+                <form id="login-form" method="post" novalidate>
+
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label for="email">Email address</label>
+                            
+                        </div>
+                        
+                        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"
+                            inputmode="email" autocapitalize="none" spellcheck="false" maxlength="254"  required
+                            aria-describedby="email-error">
+                        
+                        
+                        <p class="field-error" id="email-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                            <a href="reset-password.html">Forgot password?</a>
+                        </div>
+                        <div class="password-field">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password"
+                            maxlength="4096"  required
+                            aria-describedby="password-error">
+                        <button type="button" class="password-toggle" data-toggle="password" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+                        
+                        <p class="field-error" id="password-error"></p>
+                    </div>
+
+                    <label class="checkbox-row"><input type="checkbox" id="remember" name="remember"><span>Keep me signed in on this device<small>Leave unchecked on a shared device.</small></span></label>
+                    <p id="form-message" class="message" role="status" aria-live="polite" tabindex="-1" hidden></p>
+                    <button class="primary-button" type="submit" disabled>Log in <span aria-hidden="true">→</span></button>
+                </form>
+                <div id="account-ready" class="account-ready" hidden>
+                    <p>You’re signed in. Your account is ready.</p>
+                    <a class="primary-button" href="index.html">Continue to your dashboard <span aria-hidden="true">→</span></a>
+                </div>
+                <noscript><p class="message" data-kind="warning">JavaScript is needed to use account services. Please enable it and reload this page.</p></noscript>
+                <p class="login-prompt">New to the community? <a href="signup.html">Create an account</a></p>
+                <details class="privacy-note">
+                    <summary>About your account and privacy</summary>
+                    <p>Your account uses your name and email. Google and Apple sign-in happen in their own secure sign-in windows; this app never receives those passwords. Email-and-password accounts use Firebase Authentication. This stage does not collect symptom answers or medical histories.</p>
+                    <p>Your theme preference is saved on this device. “Keep me signed in” lets Firebase remember your session until you log out.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <p>© 2026 HealthWell Unity</p>
+        <p>Health information is educational and does not replace professional medical advice.</p>
+        <span>Made with community in mind.</span>
+    </footer>
+</body>
+</html>

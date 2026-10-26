@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f7faf9"><meta name="description" content="HealthWell Unity - a private, simple space to describe how you feel. Guidance prototype, not a diagnostic tool.">
+<title>Your wellbeing | HealthWell Unity</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<script src="js/local-preview.js"></script><script src="js/theme.js"></script>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="dashboard.css">
+<script type="module" src="script.js"></script>
+</head>
+<body class="dashboard-page" data-page="dashboard">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+<a href="index.html" class="logo" aria-label="HealthWell Unity home"><img src="assets/logo.svg" alt="" width="42" height="42"><span>HealthWell <span class="logo-unity">Unity</span></span></a>
+<div class="header-actions">
+<button type="button" class="theme-control" data-theme-toggle aria-pressed="false"><span>Dark mode</span></button>
+<details class="profile-menu" id="profile-menu" hidden><summary aria-label="Your profile menu"><span class="avatar" id="profile-initial" aria-hidden="true">U</span><span class="profile-name" id="header-name">Your account</span><span aria-hidden="true">&#8964;</span></summary><div class="profile-popover"><a href="account.html">Manage your account</a><button type="button" id="dashboard-logout">Log out</button></div></details>
+</div>
+</header>
+<main class="dashboard-main" id="main-content">
+<div id="session-status" class="session-status" role="status"><p id="session-message">Connecting to your account&hellip;</p><button id="session-retry" type="button" class="secondary-button" hidden>Try again</button> <a id="session-login" href="login.html" hidden>Back to log in</a></div>
+<noscript><p>Enable JavaScript to use your account and the interactive body selector. This prototype does not provide medical advice.</p></noscript>
+<aside class="emergency-notice" aria-label="Emergency information">
+<span class="emergency-icon" aria-hidden="true">!</span><p><strong>Need urgent help? For a life-threatening emergency, call your local emergency number now.</strong><br>Do not wait for this tool. Severe difficulty breathing, chest pain, or unconsciousness can need emergency help. <a href="https://www.londonambulance.nhs.uk/our-services/emergency-care/calling-999/" target="_blank" rel="noopener noreferrer">Emergency information (NHS, UK) &#8599;</a></p>
+</aside>
+<div id="dashboard-content" hidden>
+<section class="welcome" aria-labelledby="welcome-title">
+<div><p class="eyebrow">A little check-in, just for you</p><p class="welcome-copy" id="greeting">Hello, friend.</p><h1 id="welcome-title">How are you feeling <em>today?</em></h1><p class="welcome-copy">Tell us where it hurts or describe what you're experiencing.</p></div>
+<div class="description-box"><label for="symptom-description">Describe how you feel <span class="optional">(optional)</span></label><textarea id="symptom-description" maxlength="1000" rows="2" autocomplete="off" spellcheck="false" data-gramm="false" data-enable-grammarly="false" aria-describedby="description-privacy" placeholder="Example: I have a headache and feel dizzy."></textarea><div class="description-footer"><small id="description-privacy">Private to this page &middot; up to 1,000 characters</small><button id="use-description" type="button">Use my description <span aria-hidden="true">&#8594;</span></button></div></div>
+</section>
+<section class="workspace" aria-labelledby="body-title">
+<div class="workspace-heading"><div><h2 id="body-title">Let's start with where</h2><p>Choose an area on the body or from the list.</p></div><span class="prototype-badge">Guidance prototype</span></div>
+<div class="body-layout">
+<nav class="region-navigation" aria-label="Body regions"><p class="section-label">Where do you feel it?</p><div class="region-list" id="region-list"></div><p class="region-help">Left and right refer to your own body.<br>You can change your selection at any time.</p></nav>
+<div class="body-stage"><div class="view-toggle" role="group" aria-label="Body view"><button type="button" data-view="front" aria-pressed="true">Front view</button><button type="button" data-view="back" aria-pressed="false">Back view</button></div>
+<figure class="human-figure"><svg viewBox="0 0 300 570" xmlns="http://www.w3.org/2000/svg" aria-labelledby="human-title human-description"><title id="human-title">Choose a body region</title><desc id="human-description">An ordinary adult wearing a relaxed T-shirt, trousers, and shoes. Use the labeled body-region buttons as an alternative to the illustration.</desc><g id="body-front"><g aria-hidden="true">
+<ellipse cx="150" cy="548" rx="65" ry="7" fill="#66877b" opacity=".12"/>
+<path class="skin" d="M119 123Q101 126 92 149L78 201 65 257 58 281Q55 291 60 294L66 289 66 300Q72 306 80 299L86 280 88 262 103 220 118 178Z"/>
+<path class="skin" d="M181 123Q199 126 208 149L222 201 235 257 242 281Q245 291 240 294L234 289 234 300Q228 306 220 299L214 280 212 262 197 220 182 178Z"/>
+<path class="shoe" d="M115 512L112 531Q100 536 99 543Q101 548 129 545L140 541 139 515Z"/>
+<path class="shoe" d="M161 515L160 541 171 545Q199 548 201 543Q200 536 188 531L185 512Z"/>
+<path class="trousers" d="M113 270Q105 309 110 352L114 423 112 516Q125 522 140 516L146 420 150 337 154 420 160 516Q175 522 188 516L186 423 190 352Q195 309 187 270Z"/>
+<path d="M150 289V337M118 281Q119 301 111 309M182 281Q181 301 189 309M117 505L138 506M162 506L184 505" fill="none" stroke="#ac9d88" stroke-width="1.5"/>
+<path class="skin" d="M136 95L134 119 120 128Q150 153 180 128L166 119 164 95Z"/>
+<path class="shirt" d="M132 119Q119 121 108 129L96 164 114 174 119 164Q118 204 111 267Q148 279 189 267L181 164 186 174 204 164 192 129Q181 121 168 119Q150 140 132 119Z"/>
+<path d="M116 258Q150 267 184 258M130 122Q149 143 170 122M120 177L123 198M180 177L177 198" fill="none" stroke="#65938c" stroke-width="1.4"/>
+<ellipse class="skin" cx="121" cy="76" rx="5" ry="9"/><ellipse class="skin" cx="179" cy="76" rx="5" ry="9"/>
+<path class="skin" d="M121 53Q121 26 150 26Q179 26 179 53L177 81Q175 104 150 112Q125 104 123 81Z"/>
+<path fill="#493c34" d="M121 72Q113 47 125 33Q139 18 160 25Q184 27 181 63L177 75 173 49Q150 57 133 44L126 62 125 76Z"/>
+<path class="detail" d="M132 67Q137 64 142 67M158 67Q163 64 168 67M149 74L146 85 152 86M141 95Q150 100 159 95"/>
+<ellipse fill="#493c34" cx="137" cy="73" rx="1.8" ry="2"/><ellipse fill="#493c34" cx="163" cy="73" rx="1.8" ry="2"/>
+</g><path class="body-hit" data-body-region="head" d="M119 52Q119 22 150 22Q181 22 181 52L183 82 168 110 168 119Q150 139 132 119L132 110 117 82Z" role="button" tabindex="0" aria-label="Head and neck" aria-pressed="false"/><path class="body-hit" data-body-region="chest" d="M132 119Q150 140 168 119L181 127 181 164 184 198 116 198 119 164 119 127Z" role="button" tabindex="0" aria-label="Chest" aria-pressed="false"/><path class="body-hit" data-body-region="abdomen" d="M116 198L184 198 189 267Q150 279 111 267Z" role="button" tabindex="0" aria-label="Abdomen" aria-pressed="false"/><path class="body-hit" data-body-region="right-arm" d="M108 128L119 140 119 166 103 220 88 262 86 280 80 301Q70 309 64 300L56 294 55 282 65 256 78 201 92 149Z" role="button" tabindex="0" aria-label="Right arm" aria-pressed="false"/><path class="body-hit" data-body-region="left-arm" d="M192 128L181 140 181 166 197 220 212 262 214 280 220 301Q230 309 236 300L244 294 245 282 235 256 222 201 208 149Z" role="button" tabindex="0" aria-label="Left arm" aria-pressed="false"/><path class="body-hit" data-body-region="right-leg" d="M111 274L150 279 150 337 146 420 140 541Q122 551 99 547L98 538 111 529 112 516 114 423 110 352Q105 309 111 274Z" role="button" tabindex="0" aria-label="Right leg" aria-pressed="false"/><path class="body-hit" data-body-region="left-leg" d="M189 274L150 279 150 337 154 420 160 541Q178 551 201 547L202 538 189 529 188 516 186 423 190 352Q195 309 189 274Z" role="button" tabindex="0" aria-label="Left leg" aria-pressed="false"/></g><g id="body-back" hidden><g aria-hidden="true">
+<ellipse cx="150" cy="548" rx="65" ry="7" fill="#66877b" opacity=".12"/>
+<path class="skin" d="M119 123Q101 126 92 149L78 201 65 257 58 281Q55 291 60 294L66 289 66 300Q72 306 80 299L86 280 88 262 103 220 118 178Z"/>
+<path class="skin" d="M181 123Q199 126 208 149L222 201 235 257 242 281Q245 291 240 294L234 289 234 300Q228 306 220 299L214 280 212 262 197 220 182 178Z"/>
+<path class="shoe" d="M114 514L111 540Q125 549 140 541L139 514Z"/>
+<path class="shoe" d="M161 514L160 541Q175 549 189 540L186 514Z"/>
+<path class="trousers" d="M113 270Q105 309 110 352L114 423 112 516Q125 522 140 516L146 420 150 337 154 420 160 516Q175 522 188 516L186 423 190 352Q195 309 187 270Z"/>
+<path d="M117 285L140 287 138 307Q125 313 117 305ZM160 287L183 285 183 305Q175 313 162 307ZM150 279V337M116 505L139 506M161 506L184 505" fill="none" stroke="#ac9d88" stroke-width="1.4"/>
+<path class="skin" d="M136 95L134 119 120 128Q150 153 180 128L166 119 164 95Z"/>
+<path class="shirt" d="M132 119Q119 121 108 129L96 164 114 174 119 164Q118 204 111 267Q148 279 189 267L181 164 186 174 204 164 192 129Q181 121 168 119Q150 128 132 119Z"/>
+<path d="M116 258Q150 267 184 258M132 123Q150 131 168 123M120 177L123 198M180 177L177 198" fill="none" stroke="#65938c" stroke-width="1.4"/>
+<ellipse class="skin" cx="121" cy="76" rx="5" ry="9"/><ellipse class="skin" cx="179" cy="76" rx="5" ry="9"/>
+<path class="skin" d="M121 53Q121 26 150 26Q179 26 179 53L177 81Q175 104 150 112Q125 104 123 81Z"/>
+<path fill="#493c34" d="M121 76Q113 47 125 33Q139 18 160 25Q184 27 181 63L177 82Q172 100 162 102L138 102Q127 96 123 82Z"/>
+<path d="M128 43Q145 31 164 39" fill="none" stroke="#5b4c40" stroke-width="2" stroke-linecap="round"/>
+</g><path class="body-hit" data-body-region="head" d="M119 52Q119 22 150 22Q181 22 181 52L183 82 168 110 168 119Q150 139 132 119L132 110 117 82Z" role="button" tabindex="0" aria-label="Head and neck" aria-pressed="false"/><path class="body-hit" data-body-region="back" d="M132 119Q150 128 168 119L181 127 181 164 189 267Q150 279 111 267L119 164 119 127Z" role="button" tabindex="0" aria-label="Back" aria-pressed="false"/><path class="body-hit" data-body-region="left-arm" d="M108 128L119 140 119 166 103 220 88 262 86 280 80 301Q70 309 64 300L56 294 55 282 65 256 78 201 92 149Z" role="button" tabindex="0" aria-label="Left arm" aria-pressed="false"/><path class="body-hit" data-body-region="right-arm" d="M192 128L181 140 181 166 197 220 212 262 214 280 220 301Q230 309 236 300L244 294 245 282 235 256 222 201 208 149Z" role="button" tabindex="0" aria-label="Right arm" aria-pressed="false"/><path class="body-hit" data-body-region="left-leg" d="M111 274L150 279 150 337 146 420 140 541Q122 551 99 547L98 538 111 529 112 516 114 423 110 352Q105 309 111 274Z" role="button" tabindex="0" aria-label="Left leg" aria-pressed="false"/><path class="body-hit" data-body-region="right-leg" d="M189 274L150 279 150 337 154 420 160 541Q178 551 201 547L202 538 189 529 188 516 186 423 190 352Q195 309 189 274Z" role="button" tabindex="0" aria-label="Right leg" aria-pressed="false"/></g></svg><figcaption>Tap an area to select it.<br>Use the list for whole-body symptoms.</figcaption></figure>
+<p id="selection-caption" class="selection-caption" aria-live="polite">No area selected yet</p></div>
+<section class="question-panel" aria-labelledby="question-title">
+<div class="step-label"><span id="step-label">STEP 1 OF 3</span><span id="step-name">Your symptoms</span></div><div class="step-progress" aria-hidden="true"><span class="complete"></span><span></span><span></span></div>
+<p class="eyebrow" id="question-region">Your check-in</p><h3 id="question-title" tabindex="-1">Where shall we start?</h3><p class="question-intro" id="question-intro">Choose an area to see a few example options.</p>
+<div id="step-one"><div class="empty-prompt" id="empty-prompt">A small first step.<br>Select the area that best describes where you feel discomfort.</div><div id="symptom-options" class="symptom-options" role="group" aria-label="Example symptoms"></div></div>
+<div id="step-two" hidden><p class="question-intro">Your description from above is shown here. You can edit it, or continue without adding anything.</p><p id="notes-preview" class="notes-preview"></p><button id="edit-description" class="text-button" type="button">Edit description &#8593;</button></div>
+<div id="step-three" hidden><dl class="review-list"><dt>Body region</dt><dd id="review-region"></dd><dt>Your selected option</dt><dd id="review-symptom"></dd><dt>Your description</dt><dd id="review-description"></dd></dl><p class="clinical-note"><strong>This is a summary of your choices, not a medical assessment.</strong> Clinical guidance is disabled until reviewed by qualified healthcare professionals. No diagnosis or care recommendation has been made.</p></div>
+<p id="flow-error" class="flow-error" role="alert"></p><div class="flow-actions"><button id="flow-back" type="button" class="secondary-button" hidden>Back</button><button id="flow-continue" type="button" class="primary-button">Continue <span aria-hidden="true">&#8594;</span></button><button id="flow-reset" type="button" class="primary-button" hidden>Start a new check-in</button></div>
+</section></div>
+<div class="privacy-strip"><p><strong>Your privacy comes first.</strong> Symptom details stay in memory on this page and are never saved or sent.</p><p>Example questions &middot; Not a medical assessment</p></div>
+</section>
+<div class="support-cards"><section class="support-card"><h2>A space to describe how you feel</h2><p>Put your experience into words, at your own pace. You stay in control of your selections.</p></section><section class="support-card"><h2>Simple by design</h2><p>Use the body illustration or the labeled buttons. Move back, edit, or start again whenever you need.</p></section><section class="support-card"><h2>People first. Always.</h2><p>HealthWell Unity does not replace a doctor. This prototype cannot diagnose conditions or decide how urgently you need care.</p></section></div>
+</div>
+</main>
+<footer class="dashboard-footer"><p>HealthWell Unity &middot; A little clarity. A little care.</p><p>Prototype only. For medical advice, speak with a qualified healthcare professional.</p></footer>
+</body></html>

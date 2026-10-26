@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthWell Unity — a community-focused space for health information and wellbeing.">
+    <meta name="theme-color" content="#f7faf9">
+    <title>Your account | HealthWell Unity</title>
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <script src="js/theme.js"></script>
+    <script src="js/local-preview.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+</head>
+<body data-page="account">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <a href="index.html" class="logo" aria-label="HealthWell Unity home">
+            <img src="assets/logo.svg" alt="" width="58" height="44">
+            <span>HealthWell<span class="brand-subtitle">UNITY</span></span>
+        </a>
+        <div class="header-actions">
+            <span class="header-tagline">A healthier everyday, together.</span>
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 13A8.6 8.6 0 0 1 11 3.5 8.6 8.6 0 1 0 20.5 13Z"/></svg>
+                <span>Dark mode</span>
+            </button>
+        </div>
+    </header>
+    <p id="network-status" class="network-status message" role="status" hidden></p>
+    <main id="main-content" class="account-layout">
+        <div class="account-heading"><p class="section-kicker">YOUR HEALTHWELL SPACE</p><h1>Your account.</h1><p>A little space to make yourself at home.</p></div>
+        <p id="account-status" class="message" role="status">Checking your session…</p>
+        <div id="account-recovery" hidden><a class="secondary-button" href="login.html">Back to log in</a><button class="secondary-button" type="button" id="retry-connection">Try again</button></div>
+        <div id="account-content" hidden>
+            <section class="account-card profile-card" aria-labelledby="profile-title">
+                <div class="card-heading"><div><p class="section-kicker">GOOD TO HAVE YOU HERE</p><h2 id="profile-title">Hello, <span id="display-name">friend</span>.</h2></div><button id="logout-button" class="secondary-button" type="button">Log out</button></div>
+                <p class="account-email" id="account-email"></p>
+                <form id="profile-form" novalidate>
+                    <div class="form-group"><label for="profile-name">Your name</label><input id="profile-name" name="name" autocomplete="name" maxlength="100" required aria-describedby="profile-name-error"><p id="profile-name-error" class="field-error"></p></div>
+                    <button class="primary-button" type="submit">Save name</button>
+                </form>
+                <p id="profile-message" class="message" role="status" hidden></p>
+            </section>
+            <section class="account-card" aria-labelledby="verification-title">
+                <p class="section-kicker">ACCOUNT SECURITY</p><h2 id="verification-title">Your email address</h2>
+                <p id="verification-description">Checking verification status…</p>
+                <div id="verification-actions" class="button-row"><button id="send-verification" class="secondary-button" type="button">Send verification email</button><button id="refresh-verification" class="text-button" type="button">I’ve verified my email</button></div>
+                <p id="verification-message" class="message" role="status" hidden></p>
+                <p id="signin-methods" class="muted"></p>
+                <a id="password-reset-link" class="inline-link" href="reset-password.html" hidden>Request a password reset</a>
+            </section>
+            <section class="account-card coming-next" aria-labelledby="next-title"><span class="status-pill">IN DEVELOPMENT</span><h2 id="next-title">A thoughtful next step.</h2><p>Our health information experience is being prepared. Symptom guidance and automated recommendations are not available. Medical content must be professionally reviewed before it is enabled.</p><p class="muted">No symptom answers or medical histories are collected in this stage.</p></section>
+        </div>
+        <noscript><p class="message">Enable JavaScript to load your account.</p></noscript>
+    </main>
+    <footer class="site-footer">
+        <p>© 2026 HealthWell Unity</p>
+        <p>Health information is educational and does not replace professional medical advice.</p>
+        <span>Made with community in mind.</span>
+    </footer>
+</body>
+</html>
