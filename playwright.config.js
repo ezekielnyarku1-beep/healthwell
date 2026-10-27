@@ -14,7 +14,7 @@ export default defineConfig({
         trace: 'off',
         screenshot: 'only-on-failure'
     },
-    webServer: {
+    webServer: process.env.HEALTHWELL_TEST_SERVER === 'external' ? undefined : {
         command: 'node scripts/dev-server.mjs',
         env: { PORT: '4176' },
         url: 'http://localhost:4176/login.html',

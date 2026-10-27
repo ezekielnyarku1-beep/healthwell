@@ -129,6 +129,7 @@ test.describe('mobile touchscreen', () => {
 });
 
 test('real Firebase SDK loads and signed-out visitors see ready login controls', async ({page}) => {
+    test.skip(process.env.HEALTHWELL_LIVE_AUTH_TEST !== '1', 'Opt-in external Firebase connectivity check; run separately from offline regression tests.');
     const errors=[];
     page.on('pageerror',error=>errors.push(error.message));
     await page.goto('/');
@@ -155,6 +156,7 @@ test('signed-out visitors reach login first; errors and slow connections recover
     await expect(page.locator('#dashboard-content')).toBeVisible();
     await page.unroute('**/js/auth-service.js');
     await mockAccount(page, 'slow'); await page.clock.install(); await page.goto('/');
+    await page.waitForFunction(() => typeof window.__sessionChanged === 'function');
     await page.clock.fastForward(16000);
     await expect(page.locator('#session-retry')).toBeVisible();
     await page.evaluate(() => { window.__scenario = 'signed-in'; });

@@ -6,6 +6,12 @@ Symptom descriptions and selections stay in page memory only and are cleared on 
 
 ## Run locally
 
+The body check-in now includes a grouped, searchable symptom library with multiple selection, custom descriptions, and optional follow-up details. All check-in data stays in browser memory and is not copied into chat. See [SYMPTOM_LIBRARY.md](SYMPTOM_LIBRARY.md) for content maintenance, privacy behavior, review markers, and testing.
+
+Symptom-specific follow-ups now adapt to selected examples using a local configurable question engine. Questions appear one at a time, share common prompts across symptom combinations, and preserve editable answers, notes and earlier context. See [FOLLOW_UPS.md](FOLLOW_UPS.md) for configuration, navigation, review markers and test coverage.
+
+The fictional-data conversation prototype is now available below the existing body check-in. It defaults to browser-only scripted responses. `npm run start:ai` adds an optional, authenticated local mock backend with a $0.30 simulated budget, token/request limits and persistent usage counters. **Live Gemini traffic is locked off.** See [LOCAL_AI.md](LOCAL_AI.md) for setup, current pricing/availability findings, spending-cap limitations, tests, privacy and clinical-review gates. No API key or paid infrastructure is needed.
+
 Use Node.js 22 or later. The app has no bundled runtime dependencies. Development-only dependencies provide browser and accessibility testing; install them with `npm ci`.
 
 ```sh

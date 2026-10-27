@@ -7,12 +7,13 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const pages = new Set(['/index.html', '/login.html', '/signup.html', '/reset-password.html', '/account.html', '/style.css', '/dashboard.css', '/script.js', '/wellness-garden.svg', '/config/firebase-config.js']);
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml' };
 
-export function createDevServer() {
+export function createDevServer({ chat } = {}) {
     return http.createServer(async (request, response) => {
         response.setHeader('X-Content-Type-Options', 'nosniff');
         response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
         response.setHeader('Cache-Control', 'no-store');
         response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com https://apis.google.com; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+        if (request.url === '/api/chat' && chat) { await chat(request, response); return; }
         if (!['GET', 'HEAD'].includes(request.method)) {
             response.writeHead(405, { Allow: 'GET, HEAD' });
             response.end('Method not allowed');

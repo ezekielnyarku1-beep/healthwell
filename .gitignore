@@ -5,3 +5,7 @@ playwright-report/
 .firebase/
 firebase-debug.log*
 *.local
+.local-ai/
+.env
+.env.*
+!.env.example

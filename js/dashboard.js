@@ -1,10 +1,14 @@
 import { authService } from './auth-service.js';
 import { authErrorMessage } from './auth-errors.js';
 import { createSymptomFlow, regions } from './symptom-flow.js';
+import { setupChat } from './chat.js';
+import { setupSymptomPicker } from './symptom-picker.js';
 
 export async function setupDashboard(service = authService) {
     const $ = id => document.getElementById(id);
     const flow = createSymptomFlow();
+    const chat = setupChat(service);
+    const picker = setupSymptomPicker(flow, () => render({ focus: true, options: true }));
     const description = $('symptom-description');
     const profile = $('profile-menu');
     let unsubscribe;
@@ -40,28 +44,6 @@ export async function setupDashboard(service = authService) {
         $('region-list').append(button);
     }
 
-    function showOptions() {
-        const state = flow.state;
-        const region = regions.find(item => item.id === state.region);
-        $('symptom-options').replaceChildren();
-        for (const option of region?.options || []) {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'symptom-option';
-            button.textContent = option;
-            button.setAttribute('aria-pressed', String(state.symptom === option));
-            button.addEventListener('click', () => {
-                flow.selectSymptom(option);
-                $('flow-error').textContent = '';
-                // Keep the clicked button focused rather than replacing it.
-                for (const sibling of $('symptom-options').children) {
-                    sibling.setAttribute('aria-pressed', String(sibling === button));
-                }
-            });
-            $('symptom-options').append(button);
-        }
-    }
-
     function render({ focus = false, options = false } = {}) {
         const state = flow.state;
         const region = regions.find(item => item.id === state.region);
@@ -82,24 +64,25 @@ export async function setupDashboard(service = authService) {
         const onOtherSide = (state.region === 'back' && state.view === 'front') || (['chest', 'abdomen'].includes(state.region) && state.view === 'back');
         $('selection-caption').textContent = region ? `${region.label}${onOtherSide ? ' · highlighted on the other view' : ' selected'}` : 'No area selected yet';
         $('step-label').textContent = `STEP ${state.step} OF 3`;
-        $('step-name').textContent = ['Your symptoms', 'Your description', 'Your summary'][state.step - 1];
+        $('step-name').textContent = ['Your symptoms', 'Your optional questions', 'Your summary'][state.step - 1];
         document.querySelectorAll('.step-progress span').forEach((element, index) => element.classList.toggle('complete', index < state.step));
         $('question-region').textContent = region?.label || 'Your check-in';
         $('question-title').textContent = state.step === 1 ? (region ? 'What are you experiencing?' : 'Where shall we start?') : state.step === 2 ? 'Anything you’d like to add?' : 'Your check-in, at a glance';
-        $('question-intro').textContent = state.step === 1 ? (region ? 'Choose one option. These are interface examples, not medically validated questions.' : 'Choose an area to see a few example options.') : state.step === 2 ? 'A little context, in your own words. This is optional.' : 'Here is what you selected. Nothing has been saved.';
+        $('question-intro').textContent = state.step === 1 ? (region ? 'Choose all that fit, search the examples, or describe something else. These examples are not a medical assessment.' : 'Choose an area to explore symptom examples.') : state.step === 2 ? 'Add as much or as little context as you wish. Every question is optional.' : 'Here is what you selected. Nothing has been saved.';
         $('step-one').hidden = state.step !== 1;
         $('step-two').hidden = state.step !== 2;
         $('step-three').hidden = state.step !== 3;
         $('empty-prompt').hidden = Boolean(region);
         $('notes-preview').textContent = state.description.trim() || 'No description added. You can leave this blank.';
         $('review-region').textContent = region?.label || '';
-        $('review-symptom').textContent = state.symptom || '';
+        picker.renderSummary();
         $('review-description').textContent = state.description.trim() || 'No description added.';
         $('flow-back').hidden = state.step === 1;
         $('flow-continue').hidden = state.step === 3;
         $('flow-reset').hidden = state.step !== 3;
         $('flow-error').textContent = '';
-        if (options) showOptions();
+        if (options) picker.render();
+        picker.renderQuestions();
         if (focus) { focusQuestion(); animatePanel(); }
     }
 
@@ -112,11 +95,13 @@ export async function setupDashboard(service = authService) {
             return;
         }
         if (!flow.selectRegion(id)) return;
+        chat.setRegion(id);
         render({ options: true });
         animatePanel();
     }
 
     function clearSymptoms() {
+        chat.clear();
         flow.reset();
         description.value = '';
         render({ options: true });
@@ -147,11 +132,13 @@ export async function setupDashboard(service = authService) {
         focusQuestion();
     });
     $('edit-description').addEventListener('click', () => description.focus());
+    $('review-edit-symptoms').addEventListener('click', () => { flow.editStep(1); render({ focus: true, options: true }); });
+    $('review-edit-notes').addEventListener('click', () => description.focus());
     $('flow-continue').addEventListener('click', () => {
         const error = flow.next();
         if (error) {
             $('flow-error').textContent = error;
-            (flow.state.region ? $('symptom-options').querySelector('button') : $('region-list').querySelector('button')).focus();
+            (flow.state.region ? $('symptom-search') : $('region-list').querySelector('button')).focus();
             return;
         }
         render({ focus: true });

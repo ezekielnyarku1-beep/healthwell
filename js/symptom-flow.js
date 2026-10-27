@@ -1,26 +1,21 @@
-// Prototype state is deliberately memory-only. No clinical inference or persistence.
-export const regions = [
-    { id: 'head', label: 'Head and neck', options: ['Headache', 'Dizziness', 'Eye discomfort', 'Ear discomfort', 'Something else'] },
-    { id: 'chest', label: 'Chest', options: ['Discomfort', 'Tenderness', 'Something else'] },
-    { id: 'abdomen', label: 'Abdomen', options: ['Discomfort', 'Bloating', 'Something else'] },
-    { id: 'back', label: 'Back', options: ['Discomfort', 'Stiffness', 'Something else'] },
-    { id: 'left-arm', label: 'Left arm', options: ['Discomfort', 'Stiffness', 'Something else'] },
-    { id: 'right-arm', label: 'Right arm', options: ['Discomfort', 'Stiffness', 'Something else'] },
-    { id: 'left-leg', label: 'Left leg', options: ['Discomfort', 'Stiffness', 'Something else'] },
-    { id: 'right-leg', label: 'Right leg', options: ['Discomfort', 'Stiffness', 'Something else'] },
-    { id: 'general', label: 'Whole body / general', options: ['Feeling tired', 'Feeling unwell', 'Something else'] }
-];
+import { regions, followUpQuestions } from './symptom-library.js';
+import { questionCatalog, getQuestionPlan, getAnswerSummary } from './follow-up-questions.js';
+export { regions } from './symptom-library.js';
 
 export function createSymptomFlow() {
     let state;
-    const reset = () => { state = { region: null, symptom: null, description: '', step: 1, view: 'front' }; };
+    const emptyDetails = () => Object.fromEntries(followUpQuestions.map(question => [question.id, '']));
+    const reset = () => { state = { region: null, symptoms: [], customSymptom: '', description: '', details: emptyDetails(), detailNotes: {}, answerContexts: {}, step: 1, view: 'front' }; };
+    const findSymptom = value => regions.find(region => region.id === state.region)?.groups.flatMap(category => category.symptoms).find(symptom => symptom.id === value || symptom.label === value);
     reset();
     return {
-        get state() { return { ...state }; },
+        get state() { return structuredClone(state); },
+        get questions() { return structuredClone(getQuestionPlan(state)); },
+        get answerSummary() { return structuredClone(getAnswerSummary(state)); },
         reset,
         selectRegion(id) {
             if (!regions.some(region => region.id === id)) return false;
-            if (state.region !== id) state.symptom = null;
+            if (state.region !== id) { state.symptoms = []; state.customSymptom = ''; state.details = emptyDetails(); state.detailNotes = {}; state.answerContexts = {}; }
             state.region = id;
             state.step = 1;
             if (id === 'back') state.view = 'back';
@@ -28,15 +23,54 @@ export function createSymptomFlow() {
             return true;
         },
         selectSymptom(value) {
-            if (!regions.find(region => region.id === state.region)?.options.includes(value)) return false;
-            state.symptom = value;
+            const symptom = findSymptom(value);
+            if (!symptom) return false;
+            if (!state.symptoms.includes(symptom.id)) state.symptoms.push(symptom.id);
             return true;
+        },
+        toggleSymptom(value) {
+            const symptom = findSymptom(value);
+            if (!symptom) return false;
+            state.symptoms = state.symptoms.includes(symptom.id) ? state.symptoms.filter(id => id !== symptom.id) : [...state.symptoms, symptom.id];
+            return true;
+        },
+        setCustomSymptom(value) { state.customSymptom = String(value).slice(0, 200); },
+        setDetail(id, value) {
+            if (!Object.hasOwn(questionCatalog, id)) return false;
+            const current = getQuestionPlan(state).find(question => question.id === id);
+            const question = current || ((state.details[id] || state.detailNotes[id]) ? questionCatalog[id] : undefined);
+            if (!question || typeof value !== 'string' || (question.options && value !== '' && !question.options.includes(value))) return false;
+            state.details[id] = value.slice(0, question.maxLength || 100);
+            if (current) state.answerContexts[id] = [...current.appliesTo];
+            return true;
+        },
+        setDetailNote(id, value) {
+            const current = getQuestionPlan(state).find(question => question.id === id);
+            if ((!current && !state.details[id] && !state.detailNotes[id]) || typeof value !== 'string' || !Object.hasOwn(questionCatalog, id)) return false;
+            state.detailNotes[id] = value.slice(0, 300);
+            if (current) state.answerContexts[id] = [...current.appliesTo];
+            return true;
+        },
+        confirmDetail(id) {
+            const current = getQuestionPlan(state).find(question => question.id === id);
+            if (!current) return false;
+            state.answerContexts[id] = [...current.appliesTo];
+            return true;
+        },
+        clearDetail(id) {
+            if (!Object.hasOwn(questionCatalog, id)) return false;
+            state.details[id] = ''; delete state.detailNotes[id]; delete state.answerContexts[id];
+            return true;
+        },
+        editStep(step) {
+            if (![1, 2].includes(step) || !state.region || (!state.symptoms.length && !state.customSymptom.trim())) return false;
+            state.step = step; return true;
         },
         setDescription(value) { state.description = String(value).slice(0, 1000); },
         setView(view) { if (['front', 'back'].includes(view)) state.view = view; },
         next() {
             if (!state.region) return 'Choose a body region to continue.';
-            if (!state.symptom) return 'Choose an option to continue.';
+            if (!state.symptoms.length && !state.customSymptom.trim()) return 'Choose at least one option or describe your own symptom to continue.';
             state.step = Math.min(3, state.step + 1);
             return '';
         },
